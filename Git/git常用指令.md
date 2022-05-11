@@ -6,7 +6,7 @@
 $ git status # 查看本地仓库的修改状态
 $ git add # 暂存文件
 $ git commit # 提交文件
-$ git push origin master
+$ git push origin master # 提交远程master仓库
 $ git pull --rebase origin master # 合并上游并rebase 
 $ git rebase --abort # 回滚rebase执行 
 $ git checkout -b marys-feature dev # 检出一个基于dev名为marys-feature的分支 
@@ -61,5 +61,12 @@ $ git push origin --delete <branchName> # 删除远程仓库分支
 $ git branch -d <branchName> # 删除本地仓库分支
 ```
 
+撤销commit
 
+```bash
+$ git reset --mixed HEAD^ # 不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
+$ git reset --soft HEAD^ # [常用] HEAD^的意思是上一个版本 HEAD~2: 上两次commit撤销 不删除工作空间改动代码，撤销commit，并且撤销git add . 操作
+$ git reset --hard HEAD~1 # 删除工作空间改动代码，撤销commit，撤销git add . 恢复到了上一次的commit状态
+$ git commit --amend # 修改commit注释
+```
 
