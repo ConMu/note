@@ -70,3 +70,18 @@ $ git reset --hard HEAD~1 # 删除工作空间改动代码，撤销commit，撤�
 $ git commit --amend # 修改commit注释
 ```
 
+忽略文件
+
+```bash
+# 创建一个名为 .gitignore 的文件
+$ cat .gitignore
+*.[oa]
+*~
+```
+
+提交命令
+
+```bash
+$ git commit -a # = git add (已經追踪的文件)+ git commit 
+```
+
