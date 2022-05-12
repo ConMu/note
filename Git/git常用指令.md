@@ -83,5 +83,20 @@ $ cat .gitignore
 
 ```bash
 $ git commit -a # = git add (已經追踪的文件)+ git commit 
+$ git commit --amend # 重新提交，漏掉了几个文件没有添加，或者提交信息写错了
+```
+
+移动文件
+
+```bash
+$ git mv file_from file_to
+```
+
+查看提交历史
+
+```bash
+$ git log
+$ git log -p (-2) # 显示(近两次)次提交所引入的差异
+$ git log --stat # 提交的简略信息统计
 ```
 
