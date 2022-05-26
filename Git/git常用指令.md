@@ -1,5 +1,7 @@
 部门开发参考文档：https://github.com/xirong/my-git/blob/master/git-workflow-tutorial.md
 
+git 参考文档：https://mp.weixin.qq.com/s/n7aBrRUpkTCQE7y55og7Vg
+
 ##### 常用命令集
 
 ```bash
@@ -91,6 +93,12 @@ $ cat .gitignore
 ```bash
 $ git commit -a # = git add (已經追踪的文件)+ git commit 
 $ git commit --amend # 重新提交，漏掉了几个文件没有添加，或者提交信息写错了
+```
+
+查看暂存区
+
+```bash
+$ git ls-files # 查看暂存区中文件信息
 ```
 
 移动文件
