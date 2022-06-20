@@ -39,7 +39,12 @@ $ docker image rm [选项] <镜像1> [<镜像2> ...] # 删除本地镜像
 ##### 构建镜像
 
 ```bash
-$ docker build [选项] <上下文路径/URL/->
+$ docker build [选项] <上下文路径/URL/-> # docker 会将上下文路径中Dockerfile发送到docker引擎，需要让该目录空置 .dockerignore写不想传递的东西
+
+# docker build 其他用法 #
+$ docker build -t hello-world https://github.com/docker-library/hello-world.git#master:amd64/hello-world
+## 这行命令指定了构建所需的 Git repo，并且指定分支为 master，构建目录为 /amd64/hello-world/，然后 Docker 就会自己去 git clone 这个项目、切换到指定分支、并进入到指定目录后开始构建
+$ docker build http://server/context.tar.gz ## 给定tar压缩包构建
 ```
 
 

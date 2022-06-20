@@ -54,3 +54,21 @@ RUN set -x; buildDeps='gcc libc6-dev make wget' \
     && apt-get purge -y --auto-remove $buildDeps
 ```
 
+##### Dockerfile指令详解E
+
+```bash
+# COPY 指令将从构建上下文目录中 <源路径> 的文件/目录复制到新的一层的镜像内的 <目标路径> 位置
+$ COPY [--chown=<user>:<group>] <源路径>... <目标路径>
+$ COPY [--chown=<user>:<group>] ["<源路径1>",... "<目标路径>"]
+# CMD 指令就是用于指定默认的容器主进程的启动命令的
+$ CMD <命令>
+# ENV 环境变量配置
+$ ENV <key> <value>
+$ ENV <key1>=<value1> <key2>=<value2>...
+# EXPOSE 暴露端口 声明容器运行时提供服务的端口 声明容器打算使用什么端口而已，并不会自动在宿主进行端口映射
+$ EXPOSE <端口1> [<端口2>...]
+# WORKDIR 指定工作目录
+$ WORKDIR <工作目录路径>
+
+```
+
