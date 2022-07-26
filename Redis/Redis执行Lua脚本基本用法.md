@@ -107,7 +107,7 @@
            ```
            1. redis.call() 函数的参数可以是任意的 Redis 命令
            1. table.insert(table, pos, value)
-                
+              
                 > [1]table.insert()函数在table的数组部分指定位置(pos)插入值为value的一个元素. pos参数可选, 默认为数组部分末尾
         + 执行结果：
            ``` 
@@ -209,3 +209,13 @@
              end
              return  result;
          ```
+
+
+
+
+
+## **注意**
+
+**redis集群下使用lua脚本时有多个key的解决办法**
+
+https://blog.csdn.net/qq_32907195/article/details/107971222
