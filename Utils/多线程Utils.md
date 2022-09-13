@@ -5,3 +5,18 @@
 <img src="https://s3.ax1x.com/2020/12/21/rdcSKK.png" alt="img" style="zoom: 33%;" />
 
 https://www.cnblogs.com/cxuanBlog/p/14166322.html
+
+# ScheduledExecutorService
+
+定时任务，多线程处理
+
+```
+private ScheduledExecutorService scheduledPool;
+//起个定时任务，每天凌晨3点更新一次
+if (scheduledPool == null) {
+    scheduledPool = Executors.newScheduledThreadPool(1);
+    long initDelay = getTimeMillis("03:00:00") - System.currentTimeMillis();
+    initDelay = initDelay > 0 ? initDelay : TimeUtils.MILLIS_OF_A_DAY + initDelay;
+    scheduledPool.scheduleAtFixedRate(new FileRefreshRunner(), initDelay, TimeUtils.MILLIS_OF_A_DAY, TimeUnit.MILLISECONDS);
+}
+```
