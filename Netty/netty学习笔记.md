@@ -1,3 +1,7 @@
+学习笔记：https://dongzl.github.io/netty-handbook/#/
+
+代码demo：https://codeantenna.com/a/GuwUV8EV4Q
+
 Netty是一个异步事件驱动的网络应用程序框架，用于快速开发可维护的高性能协议服务端和客户端。
 
 特点
