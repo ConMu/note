@@ -39,7 +39,7 @@
 1. 服务端开启ServerSocket
 2. 客户端启动Socket进行通信，默认情况下服务端开启一个线程与之通信（也可用线程池）
 
-![image-20221116190355922](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116190355922.png)
+<img src="https://dongzl.github.io/netty-handbook/_media/chapter02/chapter02_03.png" alt="img" style="zoom:50%;" />
 
 ### 应用实例
 
@@ -80,7 +80,7 @@
 4. buffer底层是一个数组；
 5. NIO的buffer可读可写（通过flip方法切换）。
 
-![image-20221116200106421](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116200106421.png)
+<img src="https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_01.png" alt="img" style="zoom:50%;" />
 
 ### 缓冲区介绍（Buffer）
 
@@ -88,7 +88,7 @@
 2. 缓冲区对象内置方法，可以了解缓冲区变化情况；
 3. channel提供读写渠道，但都需要经过buffer。
 
-![image-20221116200815141](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116200815141.png)
+<img src="https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_02.png" alt="img" style="zoom:50%;" />
 
 ### 继承关系
 
@@ -98,11 +98,11 @@
 
 - 属性（容量、缓冲终点、未知、标记）
 
-![image-20221116201022808](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116201022808.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_05.png)
 
 - 方法
 
-![image-20221116201540352](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116201540352.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_06.png)
 
 ### 通道介绍（Channel）
 
@@ -150,7 +150,7 @@
 2. Selector可以检测通道上是否有事件发生（channel注册到selector）；
 3. 只有在连接、通道有读写时会进行处理，提高资源利用效率，减少多线程上下文切换的开销。
 
-![image-20221116203800078](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116203800078.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_10.png)
 
 **补充**
 
@@ -160,13 +160,13 @@
 
 ### 相关方法
 
-![image-20221116204204471](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116204204471.png)
+<img src="https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_11.png" alt="img" style="zoom:50%;" />
 
 ### 流程示意图
 
 > 包含内容：Selector、SelectionKey、ServerSocketChannel、SocketChannel
 
-![image-20221116204604542](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20221116204604542.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter03/chapter03_22.png)
 
 1. 客户端连接，通过ServerSocketChannel得到SocketChannel；
 2. Selector通过select方法进行监听，返回事件发生个数；
@@ -252,7 +252,7 @@ socket.getOutputStream().write(arr);
    4. 安全：完整的 `SSL/TLS` 和 `StartTLS` 支持。
    5. 社区活跃、不断更新：社区活跃，版本迭代周期短，发现的 `Bug` 可以被及时修复，同时，更多的新功能会被加入。
 
-![image-20230207160028254](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207160028254.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter04/chapter04_01.png)
 
 # Netty架构
 
@@ -282,7 +282,7 @@ socket.getOutputStream().write(arr);
 
 ### 原理图
 
-![image-20230207162434040](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207162434040.png)
+![img](https://dongzl.github.io/netty-handbook/_media/chapter05/chapter05_03.png)
 
 ### 特点
 
@@ -297,5 +297,24 @@ socket.getOutputStream().write(arr);
 
 ### 单Reactor单线程
 
-![image-20230207163250241](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207163250241.png)
+#### 介绍
 
+![img](https://dongzl.github.io/netty-handbook/_media/chapter05/chapter05_04.png)
+
+1. Select是IO复用模型中的标准API，实现一个阻塞对象监听多个链路请求；
+2. 反应器监控客户端请求事件，收到事件后通过Dispatch分发；
+3. 如果是建立连接请求，则通过Acceptor处理，然后创建Handler对象处理后续业务；
+4. 如果不是建立连接请求，则分发到对应Handler响应；
+5. Handler完成`read` -> 业务处理 -> `send`流程。
+
+#### 分析
+
+1. 优点：模型简单，没有多线程、进程通信、竞争的问题，全部都在一个线程中完成
+2. 缺点：
+   1. 性能问题，只有一个线程，无法完全发挥多核 `CPU` 的性能。`Handler`在处理某个连接上的业务时，整个进程无法处理其他连接事件，很容易导致性能瓶颈
+   2. 可靠性问题，线程意外终止，或者进入死循环，会导致整个系统通信模块不可用，不能接收和处理外部消息，造成节点故障
+3. 使用场景：客户端的数量有限，业务处理非常快速，比如 `Redis` 在业务处理的时间复杂度 `O(1)` 的情况
+
+### 单Reactor多线程
+
+![img](https://dongzl.github.io/netty-handbook/_media/chapter05/chapter05_05.png)
