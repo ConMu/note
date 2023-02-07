@@ -242,3 +242,60 @@ socket.getOutputStream().write(arr);
 | 可靠性   | 差       | 好                     | 好         |
 | 吞吐量   | 低       | 高                     | 高         |
 
+# Netty概述
+
+1. 官网https://netty.io/
+2. 优点
+   1. 设计优雅：适用于各种传输类型的统一 `API` 阻塞和非阻塞 `Socket`；基于灵活且可扩展的事件模型，可以清晰地分离关注点；高度可定制的线程模型-单线程，一个或多个线程池。
+   2. 使用方便：详细记录的 `Javadoc`，用户指南和示例；没有其他依赖项，`JDK5（Netty3.x）`或 `6（Netty4.x）`就足够了。
+   3. 高性能、吞吐量更高：延迟更低；减少资源消耗；最小化不必要的内存复制。
+   4. 安全：完整的 `SSL/TLS` 和 `StartTLS` 支持。
+   5. 社区活跃、不断更新：社区活跃，版本迭代周期短，发现的 `Bug` 可以被及时修复，同时，更多的新功能会被加入。
+
+![image-20230207160028254](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207160028254.png)
+
+# Netty架构
+
+## 线程模型介绍
+
+1. 目前存在的线程模型：传统阻塞`I/O`模型  与 ` Reactor`模式；
+2. 根据 `Reactor` 的数量和处理资源池线程的数量不同，有 `3` 种典型的实现单 `Reactor` 单线程；单 `Reactor`多线程；主从 `Reactor`多线程
+3. `Netty` 线程模式（`Netty` 主要基于主从 `Reactor` 多线程模型做了一定的改进，其中主从 `Reactor` 多线程模型有多个 `Reactor`）
+
+## 传统阻塞I/O模型
+
+### 原理图
+
+![img](https://dongzl.github.io/netty-handbook/_media/chapter05/chapter05_01.png)
+
+### 特点
+
+1. 阻塞IO获取数据；
+2. 每个连接都需要独立线程；
+
+### 缺点
+
+1. 并发高时，创建大量线程，系统资源开销大；
+2. 连接创建后，如果数据暂时不可读，该线程会阻塞，造成资源浪费；
+
+## Reactor模式
+
+### 原理图
+
+![image-20230207162434040](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207162434040.png)
+
+### 特点
+
+1. 基于事件驱动，`Reactor`模式，通过一个或多个输入同时传递给服务处理器的模式；
+2. 服务器端程序处理多个请求，并将它们同步分派到相应的处理线程，因此又叫`Dispatcher`模式；
+3. 使用IO复用监听事件，收到事件后，分发给某个线程，实现网络服务高并发。
+
+### 核心组成
+
+1. `Reactor`：直译为反应器，反应器在一个单独线程中执行，负责监听与分发事件，分发给适当的处理程序来对IO事件作出反应。
+2. `Handlers`：处理程序执行IO事件要完成的实际事件，反应器通过调度适当处理程序相应IO事件，处理程序执行非阻塞操作。
+
+### 单Reactor单线程
+
+![image-20230207163250241](C:\Users\mucongcong\AppData\Roaming\Typora\typora-user-images\image-20230207163250241.png)
+
